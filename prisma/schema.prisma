@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Trabajador {
+  ci String @id @unique
+  nombre String
+  apellido String 
+  telefono String
+  foto String?
+  descripcion String
+  sexo String
+  repaId Int? @unique 
+  repa Repartidor? @relation(fields: [repaId], references: [idRepa])
+  adminID Int? @unique
+  admin Administrador? @relation(fields: [adminID], references: [idAdmi])
+}
+
+model Cliente {
+  idCliente Int @id @default(autoincrement()) @unique
+  nombre String 
+  apellido String 
+  telefono String 
+  direccion String ?
+  foto String?
+  gmail String @unique
+  paquete Paquete[]
+}
+
+model Administrador {
+  idAdmi Int @id @default(autoincrement()) @unique
+  user Usuario  ?
+  rol String @default("Admin")
+  traba Trabajador ?
+}
+
+model Repartidor {
+  idRepa Int @id @unique @default(autoincrement())
+  licencia String @unique
+  rol String @default("Repa")
+  paquete Paquete[]
+  user Usuario ?
+  trabajador Trabajador?
+}
+
+model Paquete {
+  idPaq Int @id @unique @default(autoincrement())
+  direccionA String ? 
+  direccionB String 
+  nombre String
+  peso Float
+  estado Boolean @default(true)
+  entregado Boolean @default(false)
+  repaID Int? 
+  repa Repartidor? @relation(fields: [repaID], references: [idRepa])
+  clienID Int? 
+  client Cliente?@relation(fields: [clienID], references: [idCliente])
+}
+
+model Usuario {
+  idUsuario Int @id @default(autoincrement()) @unique
+  usuario String @unique
+  password String
+  repaId Int? @unique 
+  repa Repartidor? @relation(fields: [repaId], references: [idRepa])
+  adminID Int? @unique
+  admin Administrador? @relation(fields: [adminID], references: [idAdmi])
+}
+
+
