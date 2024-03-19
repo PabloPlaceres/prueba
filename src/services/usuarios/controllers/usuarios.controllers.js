@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { request, response } from "express";
 import usuarioQuery from "../query/usuario.query.js"
+import bcryptjs from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -14,15 +15,17 @@ export const listarUsers = async (req= request, res= response)=>{
     }
 }
 
-export const seedUsers = async (req, res)=>{
+export const seedUsers = async ()=>{
     try {
+        console.log('%csrc/services/usuarios/controllers/usuarios.controllers.js:19 {}', 'color: #007acc;', {});
         const users = await usuarioQuery.listarUsuarioQuery()
-
+        console.log(users)
         if(users?.length === 0){
+            console.log('Seeding', users)
 
             const salt = bcryptjs.genSaltSync()
             const password = bcryptjs.hashSync('Admin1234', salt)
-            await usuarioQuery.createUser({ data: {
+           const res = await usuarioQuery.createAdmin({ data: {
                 traba: {
                     create: {
                         ci: '01101264403', 
@@ -44,6 +47,6 @@ export const seedUsers = async (req, res)=>{
         }
 
     } catch (error) {
-        
+        console.log('%csrc/services/usuarios/controllers/usuarios.controllers.js:49 error', 'color: #007acc;', error);
     }
 }

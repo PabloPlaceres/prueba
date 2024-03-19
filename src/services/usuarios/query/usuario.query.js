@@ -29,12 +29,19 @@ const createUser = async (user)=>{
     return result
 }
 
+const createAdmin = async (user)=>{
+    const result = await prisma.administrador.create(user);
+
+    return result
+}
+
 const usuarioQuery = {
     usuarioExistente,
     eliminarUsuarioAdministradorQuery,
     eliminarUsuarioRepartidorQuery,
     listarUsuarioQuery,
-    createUser
+    createUser,
+    createAdmin
 }
 
 export default usuarioQuery

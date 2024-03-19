@@ -10,4 +10,5 @@ const server = new http.Server(app);
 server.listen(app.get("port"),async()=>{
     await seedUsers()
     console.log("es ahora")
+    console.log(`Server running on port: ${app.get('port')}`)
 })
