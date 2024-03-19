@@ -23,11 +23,18 @@ const listarUsuarioQuery = async ()=>{
     return result
 }
 
+const createUser = async (user)=>{
+    const result = await prisma.usuario.create(user);
+
+    return result
+}
+
 const usuarioQuery = {
     usuarioExistente,
     eliminarUsuarioAdministradorQuery,
     eliminarUsuarioRepartidorQuery,
-    listarUsuarioQuery
+    listarUsuarioQuery,
+    createUser
 }
 
 export default usuarioQuery

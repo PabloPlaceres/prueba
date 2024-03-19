@@ -13,3 +13,37 @@ export const listarUsers = async (req= request, res= response)=>{
         res.status(500).json({error})
     }
 }
+
+export const seedUsers = async (req, res)=>{
+    try {
+        const users = await usuarioQuery.listarUsuarioQuery()
+
+        if(users?.length === 0){
+
+            const salt = bcryptjs.genSaltSync()
+            const password = bcryptjs.hashSync('Admin1234', salt)
+            await usuarioQuery.createUser({ data: {
+                traba: {
+                    create: {
+                        ci: '01101264403', 
+                        nombre: 'Pablo',
+                        apellido: 'Placeres',
+                        telefono: '55713569',
+                        foto: "",
+                        descripcion: 'Esto es ua descripcion',
+                        sexo: 'M'
+                    }
+                },
+                user: {
+                    create: {
+                        usuario: 'Admin',
+                        password: password,
+                    }
+                }
+            }})
+        }
+
+    } catch (error) {
+        
+    }
+}
